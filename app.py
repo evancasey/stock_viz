@@ -11,14 +11,16 @@ import json
 import datetime
 import os
 
-#setting up static dir
-STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../static/')
-
 app = Flask(__name__)
+
+app.config.update(
+    DEBUG = True,
+)
 
 @app.route('/')
 def index():
 	return render_template('index2.html')
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	port = int(os.environ.get("PORT", 5000))
+	app.run(host='0.0.0.0', port=port)
