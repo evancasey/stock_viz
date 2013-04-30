@@ -1,6 +1,8 @@
 
 //load in data
-d3.csv("users.csv", function(dataRows) {
+d3.csv("../static/data/users.csv", function(dataRows) {
+
+
 
   var data = [];
 
@@ -11,20 +13,20 @@ d3.csv("users.csv", function(dataRows) {
       mentions = [],
       nodes = 6;
   
-  /*
+  
   //fill the lists with data from csv
-  dataRows.forEach(function(d) {
-    nodes = nodes + d.follow_count; 
+  dataRows.forEach(function(r) {
+    nodes = nodes + r.follow_count; 
   });
- */ 
  
-  var node_count = 0;
+ 
+  var node_count = 6;
 
   var margin = {top: 0, right: 0, bottom: 0, left: 0},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-  var n = nodes, //number of users
+  var n = node_count, //number of users
       m = 50, //still not sure what this does
       padding = 6,
       radius = d3.scale.sqrt().range([0, 12]),

@@ -19,7 +19,7 @@ var sankey = d3.sankey()
 
 var path = sankey.link();
 
-d3.csv('../static/js/industry-region-data.csv', function(dataRows) {
+d3.csv('../examples/industry-region-data.csv', function(dataRows) {
   var regions = {};
   var industries = {};
   var nodes = [];
