@@ -12,7 +12,7 @@ circle {
 <script>
 
 //load in data
-d3.csv('users.csv', function(dataRows) {
+d3.csv("users.csv", function(dataRows) {
 
   var data = [];
 
@@ -23,12 +23,12 @@ d3.csv('users.csv', function(dataRows) {
       mentions = [],
       nodes = 6;
   
-  /*
+  
   //fill the lists with data from csv
   dataRows.forEach(function(d) {
-    data.push(d.user_id);
-  })
-  */
+    nodes = nodes + d.follow_count;
+  });
+  
  
   var node_count = 0;
 
