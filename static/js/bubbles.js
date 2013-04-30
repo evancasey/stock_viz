@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-circle {
-  stroke: #fff;
-}
-
-</style>
-<body>
-<script src="http://d3js.org/d3.v2.min.js?2.9.1"></script>
-<script>
 
 //load in data
 d3.csv("users.csv", function(dataRows) {
@@ -23,12 +11,12 @@ d3.csv("users.csv", function(dataRows) {
       mentions = [],
       nodes = 6;
   
-  
+  /*
   //fill the lists with data from csv
   dataRows.forEach(function(d) {
     nodes = nodes + d.follow_count; 
   });
-  
+ */ 
  
   var node_count = 0;
 
@@ -158,6 +146,3 @@ d3.csv("users.csv", function(dataRows) {
 });
 
 
-
-
-</script>
