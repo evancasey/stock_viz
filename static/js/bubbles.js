@@ -160,7 +160,8 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
                       title: function () {
                         var name = $(this).attr("username");
                         var source = $(this).attr("source");
-                      return name + "<br>" + source;}}
+                      return '<a href=\"http://twitter.com/'+ name +'\">' + name + '</a>' +
+                      "<br>" + source;}}
                     ); 
 
     //calls cluster, updates on movement
