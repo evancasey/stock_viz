@@ -6,12 +6,15 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
       followers = [],
       retweets = [],
       mentions = [],
+      source = [],
+      color_index = [],
       user_num = -1;
 
   //fill the lists with data from csv
   dataRows.forEach(function(r) {
     //add the users
     username.push(r.username);
+    source.push(r.source);
 
     //parse the values to integers
     var follow_count = parseInt(r.followers),
@@ -22,6 +25,69 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
     followers.push(follow_count);
     retweets.push(retweet_count);
     mentions.push(mention_count);
+
+    //add to color index
+    switch(r.source) {
+      case "web":
+        color_index.push(0);
+        break;
+      case "SocialFlow":
+        color_index.push(1);
+        break;
+      case "TweetDeck":
+        color_index.push(2);
+        break;
+      case "Business Insider":
+        color_index.push(3);
+        break;
+      case "StockTwits Web":
+        color_index.push(4);
+        break;
+      case "Twitter for Android":
+        color_index.push(5);
+        break;
+      case "HootSuite":
+        color_index.push(6);
+        break;
+      case "twitterfeed":
+        color_index.push(7);
+        break;
+      case "Twitter for iPhone":
+        color_index.push(8);
+        break;
+      case "Seeking Alpha":
+        color_index.push(9);
+        break;
+      case "Janetter":
+        color_index.push(10);
+        break;
+      case "Sprout Social":
+        color_index.push(11);
+        break;
+      case "Mobile Web (M2)":
+        color_index.push(12);
+        break;
+      case "Tweet Button":
+        color_index.push(13);   
+        break;
+      case "Safari on iOS":
+        color_index.push(14);   
+        break;
+      case "NASDAQ.com":
+        color_index.push(15);   
+        break;
+      case "TradingView":
+        color_index.push(16);   
+        break;
+      case "RiskReversal":
+        color_index.push(17);   
+        break;
+      case "bitly":
+        color_index.push(18);  
+        break;
+      default:
+        color_index.push(19);        
+    }
   });
 
   //define table margins
@@ -40,10 +106,10 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
 
   //define node fields    
   var n = username.length - 1, //number of users
-      m = 50, 
+      m = 1000, 
       padding = 6,
       radius = d3.scale.sqrt().range([1, 2]),
-      color = d3.scale.category10().domain(d3.range(m)),
+      color = d3.scale.category20c(),
       gravity = -10,
       friction = .5,
       charge = -10;
@@ -51,11 +117,11 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
   //load dynamic node data    
   var nodes = d3.range(n).map(function() {
     user_num++; //increment by one to access next user
-    var i = Math.floor(Math.random() * m);
     return {
       radius: radius((followers[user_num])/1800),
       username: username[user_num],
-      color: color(i)
+      source: source[user_num],
+      color: color(color_index[user_num])
     };
   });
 
@@ -83,17 +149,19 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
         .attr("r", function(d) { return d.radius; })
         .attr("class","node")
         .attr("username", function(d) {return d.username; })
+        .attr("source", function(d) {return d.source; })
         .style("fill", function(d) { return d.color; })
         .call(force.drag);
         
 
     //add tipsy tooltip
-    $(".node").tipsy({html:false,
+    $(".node").tipsy({html:true,
                       fade: true,
                       gravity: 'e',
                       title: function () {
                         var name = $(this).attr("username");
-                      return name;}}
+                        var source = $(this).attr("source");
+                      return name + "<br>" + source;}}
                     ); 
 
     //calls cluster, updates on movement
@@ -157,8 +225,10 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
 
   function loadFollow() {
 
+    //reset user_num
     user_num = -1;
 
+    //update node values with new data
     var nodeUpdate = d3.range(n).map(function() {
       user_num++; //increment by one to access next user
       var i = Math.floor(Math.random() * m);
@@ -175,6 +245,8 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
   };
 
   function loadRetweet () {
+
+    //reset user_num
     user_num = -1;
 
     var nodeUpdate = d3.range(n).map(function() {
@@ -192,6 +264,8 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
   }  
 
   function loadMention () {
+
+    //reset user_num
     user_num = -1;
 
     var nodeUpdate = d3.range(n).map(function() {
