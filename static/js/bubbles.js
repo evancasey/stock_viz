@@ -30,7 +30,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       height = 500 - margin.top - margin.bottom;
 
   //create the svg
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select("body").append("svg:svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -77,11 +77,20 @@ d3.csv("../static/data/data.csv", function(dataRows) {
     //create each circle
     var circle = svg.selectAll("circle")
         .data(nodes)
-      .enter().append("circle")
+      .enter().append("svg:circle")
         .attr("r", function(d) { return d.radius; })
+        .attr("class","node")
         .style("fill", function(d) { return d.color; })
-        .call(force.drag)
-        //.on("mouseover", function(d, i) { force.resume(); highlight( d, i, this ); });
+        .call(force.drag);
+        
+
+    //add tipsy tooltip
+    $(".node").tipsy({html:false,
+                      fade: true,
+                      gravity: 'e',
+                      title: function () {
+                      return "Testing123";}}
+                    ); 
 
     //calls cluster
     function tick(e) {
@@ -184,7 +193,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       user_num++; //increment by one to access next user
       var i = Math.floor(Math.random() * m);
       return {
-        radius: radius(mentions[user_num]*4),
+        radius: radius(mentions[user_num]*4.5),
         color: color(i)
       };
     });
