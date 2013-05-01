@@ -8,45 +8,35 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       mentions = [],
       user_num = -1;
 
+  //fill the lists with data from csv
+  dataRows.forEach(function(r) {
+    //add the users
+    username.push(r.username);
+
+    //parse the values to integers
+    var follow_count = parseInt(r.followers),
+        retweet_count = parseInt(r.retweets),
+        mention_count = parseInt(r.mentions);
+
+    //add to the list
+    followers.push(follow_count);
+    retweets.push(retweet_count);
+    mentions.push(mention_count);
+  });
+
   //define table margins
   var margin = {top: 1, right: 1, bottom: 6, left: 1},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-  $(function(){
-    dynamic()
-    showGraph();
-  })
+  //create the svg
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  function dynamic() {
-    loadData();
-  }
-
-  function loadData() {
-    //fill the lists with data from csv
-    dataRows.forEach(function(r) {
-      //add the users
-      username.push(r.username);
-
-      //parse the values to integers
-      var follow_count = parseInt(r.followers),
-          retweet_count = parseInt(r.retweets),
-          mention_count = parseInt(r.mentions);
-
-      //add to the list
-      followers.push(follow_count);
-      retweets.push(retweet_count);
-      mentions.push(mention_count);
-    });
-  }
-
-  function showGraph() {
-
-    loadDynamic();
-
-  }
-
-function loadDynamic() {
+  var user_num = -1;
 
   //define node fields    
   var n = username.length - 1, //number of users
@@ -58,17 +48,21 @@ function loadDynamic() {
       friction = .5,
       charge = -1;
 
+  //load dynamic node data    
+  var nodes = d3.range(n).map(function() {
+    user_num++; //increment by one to access next user
+    var i = Math.floor(Math.random() * m);
+    return {
+      radius: radius((followers[user_num])/2500),
+      color: color(i)
+    };
+  });
 
+  $(function(){
+    showGraph();
+  })
 
-    //load dynamic node data    
-    var nodes = d3.range(n).map(function() {
-      user_num++; //increment by one to access next user
-      var i = Math.floor(Math.random() * m);
-      return {
-        radius: radius((followers[user_num])/1200),
-        color: color(i)
-      };
-    });
+  function showGraph() {
 
     //start the visualization
     var force = d3.layout.force()
@@ -79,13 +73,6 @@ function loadDynamic() {
         .friction(friction)
         .on("tick", tick)
         .start();
-
-    //create the svg
-    var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //create each circle
     var circle = svg.selectAll("circle")
@@ -99,7 +86,7 @@ function loadDynamic() {
     //calls cluster
     function tick(e) {
       circle
-          .each(collide(.05))
+          .each(collide(.075))
           .attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; });
     }
@@ -135,9 +122,79 @@ function loadDynamic() {
       };
     }
 
+     d3.select("#follow")
+    .on("click", function(){
+      loadFollow();
+      showGraph();
+    })
+    
+     d3.select("#retweet")
+    .on("click", function(){
+      loadRetweet();
+      showGraph();
+    })
+
+     d3.select("#mention")
+    .on("click", function(){
+      loadMention();
+      showGraph();
+    })
+
+  }
+
+  function loadFollow() {
+    user_num = -1;
+
+    var nodeUpdate = d3.range(n).map(function() {
+      user_num++; //increment by one to access next user
+      var i = Math.floor(Math.random() * m);
+      return {
+        radius: radius(followers[user_num]/2500),
+        color: color(i)
+      };
+    });
+
+   svg.selectAll("circle")
+    .data(nodeUpdate)
+    .attr("r", function(d) { return d.radius; });
+
   };
 
+  function loadRetweet () {
+    user_num = -1;
 
+    var nodeUpdate = d3.range(n).map(function() {
+      user_num++; //increment by one to access next user
+      var i = Math.floor(Math.random() * m);
+      return {
+        radius: radius(retweets[user_num]*3),
+        color: color(i)
+      };
+    });
+
+   svg.selectAll("circle")
+    .data(nodeUpdate)
+    .attr("r", function(d) { return d.radius; });
+  }  
+
+  function loadMention () {
+    user_num = -1;
+
+    var nodeUpdate = d3.range(n).map(function() {
+      user_num++; //increment by one to access next user
+      var i = Math.floor(Math.random() * m);
+      return {
+        radius: radius(mentions[user_num]*4),
+        color: color(i)
+      };
+    });
+
+   svg.selectAll("circle")
+    .data(nodeUpdate)
+    .attr("r", function(d) { return d.radius; });
+  }  
+
+  
 });
 
 
