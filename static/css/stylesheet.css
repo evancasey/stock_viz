@@ -11,6 +11,10 @@ body {
     width: 960px;
 }
 
+#vis {
+  width: 1000px;
+  height: 500px;
+}
 h1 {
     font-size: 48px;
     font-weight: 300;
@@ -31,10 +35,12 @@ h2 a {
 }
 footer {
     font-size: small;
-    margin-top: 8em;
+    margin-top: 4em;
+    margin-bottom: 50px;
 }
 header aside {
-    margin-top: 82px;
+
+    margin-bottom: 50px;
 }
 header aside, footer aside {
     color: #636363;
@@ -42,13 +48,21 @@ header aside, footer aside {
 }
 aside {
     font-size: small;
-    left: 780px;
+    left: 1000px;
     position: absolute;
     width: 180px;
 }
 .attribution {
     font-size: small;
     margin-bottom: 2em;
+}
+
+.class {
+    font-family: "Helvetica Neue",Helvetica,sans-serif;
+    margin: 1em auto 4em;
+    position: relative;
+    padding-top: 1000px;
+    width: 960px;
 }
 body > p, li > p {
     line-height: 1.5em;
@@ -122,7 +136,14 @@ blockquote:after {
     position: absolute;
 }
 #chart {
-  height: 500px;
+   font-family: "Helvetica Neue",Helvetica,sans-serif;
+    margin: 1em auto 4em;
+    position: absolute;
+    padding-right: 100px;
+    padding-left: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;   
+    width: 960px;
 }
 .node rect {
   cursor: move;

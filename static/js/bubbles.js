@@ -1,5 +1,5 @@
 //load in data
-d3.csv("../static/data/data.csv", function(dataRows) {
+d3.csv("../static/data/data_trunc.csv", function(dataRows) {
 
   //initialize lists to store user data
   var username = [],
@@ -30,7 +30,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       height = 500 - margin.top - margin.bottom;
 
   //create the svg
-  var svg = d3.select("body").append("svg:svg")
+  var svg = d3.select("#vis").append("svg:svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -44,20 +44,21 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       padding = 6,
       radius = d3.scale.sqrt().range([1, 2]),
       color = d3.scale.category10().domain(d3.range(m)),
-      gravity = .01,
+      gravity = -10,
       friction = .5,
-      charge = -1;
+      charge = -10;
 
   //load dynamic node data    
   var nodes = d3.range(n).map(function() {
     user_num++; //increment by one to access next user
     var i = Math.floor(Math.random() * m);
     return {
-      radius: radius((followers[user_num])/2500),
+      radius: radius((followers[user_num])/1800),
       username: username[user_num],
       color: color(i)
     };
   });
+
 
   $(function(){
     showGraph();
@@ -95,7 +96,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
                       return name;}}
                     ); 
 
-    //calls cluster
+    //calls cluster, updates on movement
     function tick(e) {
       circle
           .each(collide(.075))
@@ -155,13 +156,14 @@ d3.csv("../static/data/data.csv", function(dataRows) {
   }
 
   function loadFollow() {
+
     user_num = -1;
 
     var nodeUpdate = d3.range(n).map(function() {
       user_num++; //increment by one to access next user
       var i = Math.floor(Math.random() * m);
       return {
-        radius: radius(followers[user_num]/2500),
+        radius: radius(followers[user_num]/1800),
         color: color(i)
       };
     });
@@ -179,7 +181,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       user_num++; //increment by one to access next user
       var i = Math.floor(Math.random() * m);
       return {
-        radius: radius(retweets[user_num]*3),
+        radius: radius(retweets[user_num]*2),
         color: color(i)
       };
     });
@@ -196,7 +198,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       user_num++; //increment by one to access next user
       var i = Math.floor(Math.random() * m);
       return {
-        radius: radius(mentions[user_num]*4.5),
+        radius: radius(mentions[user_num]*3),
         color: color(i)
       };
     });

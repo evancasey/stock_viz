@@ -6,17 +6,27 @@
 
 <body>
 	
-	<h1>Visualizing the Stock Tweets Community with D3</h1>
-	<div id="main" role="main">
+	<h1>Visualizing the "Stock Tweets" Community with D3</h1>
+	
       <div id="view_selection" class="btn-group">
         <a href="#" id="follow" class="btn">Followers</a>
         <a href="#" id="retweet" class="btn">Retweets</a>
         <a href="#" id="mention" class="btn">Mentions</a>
       </div>
-    </div>
+      
+      <div id="vis"></div>
+
+A visualization of different user influence measures across the top 500 most influential $TICKER users. Data collected from the Twitter Streaming API between 4/22/13 and 4/29/13. <br><br> Mouse over each node for more information on a particular user. Bubble size indicates the normalized follow/mention/retweet count for each user. You can also drag and drop the nodes, go ahead...it's pretty fun.<br><br>Built using <a href="http://d3js.org">D3</a>.
+<footer>
+<aside><a href="https://github.com/evancasey/stock_viz"> Source Code</a>
+ </aside>
+<a href="../" rel="author">Evan Casey</a><p>
+</footer>
+
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script src="http://d3js.org/d3.v2.min.js?2.9.1"></script>
 <script src="../static/js/bubbles.js"></script>
 <script type="text/javascript" src="../static/js/jquery.tipsy.js"></script>
+
 </body>
