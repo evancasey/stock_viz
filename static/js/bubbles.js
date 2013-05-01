@@ -1,44 +1,49 @@
 
 //load in data
-d3.csv("../static/data/users.csv", function(dataRows) {
+d3.csv("../static/data/data.csv", function(dataRows) {
 
-
-
-  var data = [];
-
-  //initialize lists to store node fields
-  var users = [],
+  //initialize lists to store user data
+  var username = [],
       followers = [],
       retweets = [],
       mentions = [],
-      nodes = 6;
-  
+      user_num = -1;
   
   //fill the lists with data from csv
   dataRows.forEach(function(r) {
-    nodes = nodes + r.follow_count; 
-  });
- 
- 
-  var node_count = 6;
+    //add the users
+    username.push(r.username);
 
-  var margin = {top: 0, right: 0, bottom: 0, left: 0},
+    //parse the values to integers
+    var follow_count = parseInt(r.followers);
+    var retweet_count = parseInt(r.retweets);
+    var mention_count = parseInt(r.mentions);
+
+    //add to the list
+    followers.push(follow_count);
+    retweets.push(retweet_count);
+    mentions.push(mention_count);
+  });
+
+  //define table margins
+  var margin = {top: 1, right: 1, bottom: 6, left: 1},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-  var n = node_count, //number of users
+  //define node fields    
+  var n = username.length - 1, //number of users
       m = 50, //still not sure what this does
       padding = 6,
-      radius = d3.scale.sqrt().range([0, 12]),
+      radius = d3.scale.sqrt().range([1, 2]),
       color = d3.scale.category10().domain(d3.range(m)),
       user = d3.scale.sqrt().range([0, 12]);
 
 
   var nodes = d3.range(n).map(function() {
-    node_count++;
+    user_num++; //increment by one to access next user
     var i = Math.floor(Math.random() * m);
     return {
-      radius: radius(5),
+      radius: radius((followers[user_num])/1000),
       color: color(i),
       user: user
     };
@@ -49,8 +54,7 @@ d3.csv("../static/data/users.csv", function(dataRows) {
   var force = d3.layout.force()
       .nodes(nodes)
       .size([width, height])
-      .gravity(.005)
-      .charge(0)
+      .charge(5)
       .on("tick", tick)
       .start();
 
@@ -72,18 +76,17 @@ d3.csv("../static/data/users.csv", function(dataRows) {
   //not sure what this does
   function tick(e) {
     circle
-        .each(cluster(10 * e.alpha * e.alpha))
-        .each(collide(.5))
+        .each(cluster(25 * e.alpha * e.alpha))
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
 
 
-  // Move d to be adjacent to the cluster node.
+  //move d to be adjacent to the cluster node.
   function cluster(alpha) {
     var max = {};
 
-    // Find the largest node for each cluster.
+    //find the largest node for each cluster.
     nodes.forEach(function(d) {
       if (!(d.color in max) || (d.radius > max[d.color].radius)) {
         max[d.color] = d;
