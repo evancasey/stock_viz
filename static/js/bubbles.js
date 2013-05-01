@@ -125,7 +125,6 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
     };
   });
 
-
   $(function(){
     showGraph();
   })
@@ -229,18 +228,23 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
     user_num = -1;
 
     //update node values with new data
-    var nodeUpdate = d3.range(n).map(function() {
+    nodes = d3.range(n).map(function() {
       user_num++; //increment by one to access next user
-      var i = Math.floor(Math.random() * m);
       return {
-        radius: radius(followers[user_num]/1800),
-        color: color(i)
+        radius: radius((followers[user_num])/1800),
+        username: username[user_num],
+        source: source[user_num],
+        color: color(color_index[user_num])
       };
     });
 
    svg.selectAll("circle")
-    .data(nodeUpdate)
-    .attr("r", function(d) { return d.radius; });
+    .data(nodes)
+    .attr("r", function(d) { return d.radius; })
+    .attr("class","node")
+    .attr("username", function(d) {return d.username; })
+    .attr("source", function(d) {return d.source; })
+    .style("fill", function(d) { return d.color; });
 
   };
 
@@ -249,18 +253,24 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
     //reset user_num
     user_num = -1;
 
-    var nodeUpdate = d3.range(n).map(function() {
+    //update node values with new data
+    nodes = d3.range(n).map(function() {
       user_num++; //increment by one to access next user
-      var i = Math.floor(Math.random() * m);
       return {
         radius: radius(retweets[user_num]*2),
-        color: color(i)
+        username: username[user_num],
+        source: source[user_num],
+        color: color(color_index[user_num])
       };
     });
 
    svg.selectAll("circle")
-    .data(nodeUpdate)
-    .attr("r", function(d) { return d.radius; });
+    .data(nodes)
+    .attr("r", function(d) { return d.radius; })
+    .attr("class","node")
+    .attr("username", function(d) {return d.username; })
+    .attr("source", function(d) {return d.source; })
+    .style("fill", function(d) { return d.color; });
   }  
 
   function loadMention () {
@@ -268,18 +278,25 @@ d3.csv("../static/data/data_trunc.csv", function(dataRows) {
     //reset user_num
     user_num = -1;
 
-    var nodeUpdate = d3.range(n).map(function() {
+    //update node values with new data
+    nodes = d3.range(n).map(function() {
       user_num++; //increment by one to access next user
-      var i = Math.floor(Math.random() * m);
       return {
         radius: radius(mentions[user_num]*3),
-        color: color(i)
+        username: username[user_num],
+        source: source[user_num],
+        color: color(color_index[user_num])
       };
     });
 
+
    svg.selectAll("circle")
-    .data(nodeUpdate)
-    .attr("r", function(d) { return d.radius; });
+    .data(nodes)
+    .attr("r", function(d) { return d.radius; })
+    .attr("class","node")
+    .attr("username", function(d) {return d.username; })
+    .attr("source", function(d) {return d.source; })
+    .style("fill", function(d) { return d.color; });
   }  
 
   
