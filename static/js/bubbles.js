@@ -54,6 +54,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
     var i = Math.floor(Math.random() * m);
     return {
       radius: radius((followers[user_num])/2500),
+      username: username[user_num],
       color: color(i)
     };
   });
@@ -80,6 +81,7 @@ d3.csv("../static/data/data.csv", function(dataRows) {
       .enter().append("svg:circle")
         .attr("r", function(d) { return d.radius; })
         .attr("class","node")
+        .attr("username", function(d) {return d.username; })
         .style("fill", function(d) { return d.color; })
         .call(force.drag);
         
@@ -89,7 +91,8 @@ d3.csv("../static/data/data.csv", function(dataRows) {
                       fade: true,
                       gravity: 'e',
                       title: function () {
-                      return "Testing123";}}
+                        var name = $(this).attr("username");
+                      return name;}}
                     ); 
 
     //calls cluster
