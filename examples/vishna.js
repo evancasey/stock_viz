@@ -31,7 +31,7 @@ var vishna = (function() {
         damper   = 0.2,
         friction = 0.9,
         force = d3       //gravity engine
-            .layout
+            .layout 
             .force()
             .size([ w - m,
                     h - m ]),
